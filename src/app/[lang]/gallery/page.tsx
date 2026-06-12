@@ -22,7 +22,7 @@ export default async function GalleryPage({ params }: GalleryPageProps) {
 
   return (
     <section className="px-4 py-5">
-      <div className="gallery-panel mx-auto max-w-7xl rounded-2xl p-7 sm:p-10">
+      <div className="gallery-panel mx-auto max-w-7xl rounded-2xl p-5 sm:p-10">
         <div className="mb-8">
           <p className="mb-8 text-xs text-stone-500">
             {dictionary.gallery.breadcrumbHome} &gt; {dictionary.gallery.breadcrumbGallery}

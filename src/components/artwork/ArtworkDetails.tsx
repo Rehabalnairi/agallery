@@ -27,7 +27,7 @@ export default function ArtworkDetails({ artwork, categoryLabel, labels }: Artwo
 
   return (
     <section className="px-4 py-5">
-      <div className="gallery-panel mx-auto grid max-w-7xl gap-10 rounded-2xl p-7 sm:p-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+      <div className="gallery-panel mx-auto grid max-w-7xl gap-8 rounded-2xl p-5 sm:gap-10 sm:p-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
         <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-violet-400/40 bg-zinc-900">
           <Image
             src={artwork.image}
@@ -39,10 +39,10 @@ export default function ArtworkDetails({ artwork, categoryLabel, labels }: Artwo
           />
         </div>
         <div className="lg:sticky lg:top-24">
-          <p className="mb-8 text-xs text-stone-500">
+          <p className="mb-8 break-words text-xs text-stone-500">
             {labels.breadcrumbHome} &gt; {labels.breadcrumbGallery} &gt; {artwork.title}
           </p>
-          <h1 className="serif-title text-4xl text-stone-50 sm:text-5xl">{artwork.title}</h1>
+          <h1 className="serif-title break-words text-3xl text-stone-50 sm:text-5xl">{artwork.title}</h1>
           <p className="mt-4 text-sm text-stone-400">
             {artwork.artist}, {artwork.year}
           </p>
@@ -79,7 +79,7 @@ export default function ArtworkDetails({ artwork, categoryLabel, labels }: Artwo
               <dd className="mt-1 text-stone-200">{artwork.year}</dd>
             </div>
           </dl>
-          <p className="mt-8 max-w-xl text-base leading-8 text-stone-300">{artwork.description}</p>
+          <p className="mt-8 max-w-xl break-words text-base leading-8 text-stone-300">{artwork.description}</p>
         </div>
       </div>
     </section>

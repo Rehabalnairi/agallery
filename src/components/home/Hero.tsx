@@ -89,7 +89,7 @@ export default function Hero({ locale, labels }: HeroProps) {
     <section className="art-font text-stone-50">
       <div
         onMouseMove={handlePointerMove}
-        className="relative min-h-[650px] w-full overflow-hidden"
+        className="relative min-h-[560px] w-full overflow-hidden sm:min-h-[650px]"
       >
         <div
           ref={galleryRef}
@@ -113,10 +113,10 @@ export default function Hero({ locale, labels }: HeroProps) {
         </div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_22%,rgba(34,211,238,0.18),transparent_19rem),linear-gradient(90deg,rgba(8,7,12,0.98)_0%,rgba(8,7,12,0.82)_45%,rgba(8,7,12,0.34)_100%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(8,7,12,0.18)_55%,rgba(8,7,12,0.88)_100%)]" />
-        <div className="relative flex min-h-[650px] flex-col justify-between p-7 sm:p-12 lg:p-16">
-          <div className="max-w-xl pt-14">
-            <div className="mb-8 h-28 w-px bg-white/15" />
-            <h1 className="serif-title text-6xl leading-[0.95] text-stone-100 sm:text-7xl">
+        <div className="relative flex min-h-[560px] flex-col justify-between p-5 sm:min-h-[650px] sm:p-12 lg:p-16">
+          <div className="max-w-xl pt-10 sm:pt-14">
+            <div className="mb-8 h-20 w-px bg-white/15 sm:h-28" />
+            <h1 className="serif-title text-5xl leading-[1.02] text-stone-100 sm:text-7xl sm:leading-[0.95]">
               {labels.line1}
               <br />
               {labels.line2}

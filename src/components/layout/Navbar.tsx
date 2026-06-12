@@ -19,7 +19,7 @@ export default function Navbar({ locale, labels }: NavbarProps) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#111018]/80 backdrop-blur-xl">
-      <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5">
+      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:h-20 sm:px-5">
         <Link href={`/${locale}`} className="flex items-center gap-3 text-lg font-semibold tracking-wide text-stone-50">
           <Image
             src="/images/brand/artgallery-logo.png"
@@ -27,12 +27,12 @@ export default function Navbar({ locale, labels }: NavbarProps) {
             width={64}
             height={64}
             priority
-            className="h-16 w-16 object-contain"
+            className="h-14 w-14 object-contain sm:h-16 sm:w-16"
           />
           <span className="sr-only">{labels.brand}</span>
         </Link>
-        <div className="flex items-center gap-4">
-          <div className="hidden items-center gap-8 text-sm font-medium text-stone-300 md:flex">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-4 text-sm font-medium text-stone-300 sm:gap-8">
             {navItems.map((item) => (
               <Link key={item.label} href={item.href} className="transition hover:text-white">
                 {item.label}

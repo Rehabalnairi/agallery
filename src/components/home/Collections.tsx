@@ -31,9 +31,9 @@ export default function Collections({ locale, artworks, labels }: CollectionsPro
 
   return (
     <section className="art-font pb-5">
-      <div className="gallery-panel w-full rounded-2xl p-7 sm:p-10">
-        <div className="mb-8 flex items-center justify-between gap-4">
-          <h2 className="serif-title text-3xl text-stone-50 sm:text-4xl">
+      <div className="gallery-panel w-full rounded-2xl p-5 sm:p-10">
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+          <h2 className="serif-title min-w-0 break-words text-3xl text-stone-50 sm:text-4xl">
             {labels.title}
           </h2>
           <Link href={`/${locale}/gallery`} className="text-sm text-stone-300 transition hover:text-white">
@@ -57,7 +57,7 @@ export default function Collections({ locale, artworks, labels }: CollectionsPro
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
               <div className="relative mt-auto flex w-full items-end justify-between gap-4">
                 <div>
-                  <h3 className="serif-title text-2xl leading-tight text-white">
+                  <h3 className="serif-title break-words text-2xl leading-tight text-white">
                     {collection.title}
                   </h3>
                   <p className="mt-4 text-sm text-stone-300">{collection.count}</p>
@@ -69,7 +69,7 @@ export default function Collections({ locale, artworks, labels }: CollectionsPro
             </Link>
           ))}
         </div>
-        <div className="mt-10 overflow-hidden rounded-xl border border-white/10 bg-[radial-gradient(circle_at_70%_40%,rgba(139,92,246,0.55),transparent_18rem),linear-gradient(90deg,rgba(13,12,19,1),rgba(24,24,36,1))] p-7">
+        <div className="mt-10 overflow-hidden rounded-xl border border-white/10 bg-[radial-gradient(circle_at_70%_40%,rgba(139,92,246,0.55),transparent_18rem),linear-gradient(90deg,rgba(13,12,19,1),rgba(24,24,36,1))] p-5 sm:p-7">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div>
               <h3 className="serif-title text-2xl text-white">{labels.newsletterTitle}</h3>
@@ -77,11 +77,11 @@ export default function Collections({ locale, artworks, labels }: CollectionsPro
                 {labels.newsletterDescription}
               </p>
             </div>
-            <form className="flex w-full max-w-md overflow-hidden rounded-full border border-white/15 bg-black/20 p-1">
+            <form className="flex w-full max-w-md flex-col gap-2 rounded-2xl border border-white/15 bg-black/20 p-2 sm:flex-row sm:overflow-hidden sm:rounded-full sm:p-1">
               <input
                 aria-label={labels.emailLabel}
                 placeholder={labels.emailPlaceholder}
-                className="min-w-0 flex-1 bg-transparent px-5 text-sm text-white outline-none placeholder:text-stone-500"
+                className="min-w-0 flex-1 bg-transparent px-4 py-3 text-sm text-white outline-none placeholder:text-stone-500 sm:px-5 sm:py-0"
               />
               <button className="rounded-full bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-3 text-sm font-semibold text-white">
                 {labels.subscribe}

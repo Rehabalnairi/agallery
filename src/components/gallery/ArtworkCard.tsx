@@ -40,8 +40,8 @@ export default function ArtworkCard({ locale, artwork, categoryLabel, labels }: 
         </Link>
         <div className="flex items-end justify-between gap-4 p-4">
           <Link href={href} className="min-w-0">
-            <h3 className="text-sm font-semibold text-stone-50">{artwork.title}</h3>
-            <p className="mt-1 text-xs text-stone-400">{artwork.artist}</p>
+            <h3 className="break-words text-sm font-semibold text-stone-50">{artwork.title}</h3>
+            <p className="mt-1 break-words text-xs text-stone-400">{artwork.artist}</p>
             <p className="mt-2 text-xs text-violet-200/80">{categoryLabel}</p>
           </Link>
           <button

@@ -9,19 +9,19 @@ type FooterProps = {
 
 export default function Footer({ labels }: FooterProps) {
   return (
-    <footer className="pb-6 text-stone-100">
-      <div className="gallery-panel flex w-full flex-col gap-3 rounded-2xl px-6 py-7 text-sm sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
+    <footer className="px-4 pb-5 text-stone-100 sm:px-0 sm:pb-6">
+      <div className="gallery-panel flex w-full flex-col items-center gap-3 rounded-2xl px-5 py-6 text-center text-sm sm:flex-row sm:justify-between sm:px-6 sm:py-7 sm:text-start">
+        <div className="flex shrink-0 items-center gap-3">
           <Image
             src="/images/brand/artgallery-logo.png"
             alt={labels.brand}
             width={56}
             height={56}
-            className="h-14 w-14 object-contain"
+            className="h-12 w-12 object-contain sm:h-14 sm:w-14"
           />
           <span className="sr-only">{labels.brand}</span>
         </div>
-        <p className="text-stone-400">{labels.tagline}</p>
+        <p className="max-w-xs leading-6 text-stone-400 sm:max-w-full sm:text-end">{labels.tagline}</p>
       </div>
     </footer>
   );
