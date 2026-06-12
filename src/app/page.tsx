@@ -1,14 +1,5 @@
-import Collections from "@/components/home/Collections";
-import Hero from "@/components/home/Hero";
-import { getFeaturedArtworks } from "@/lib/getArtworks";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  const featuredArtworks = getFeaturedArtworks();
-
-  return (
-    <>
-      <Hero />
-      <Collections artworks={featuredArtworks} />
-    </>
-  );
+  redirect("/en");
 }

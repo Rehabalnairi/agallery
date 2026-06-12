@@ -1,5 +1,4 @@
-import { notFound } from "next/navigation";
-import ArtworkDetails from "@/components/artwork/ArtworkDetails";
+import { redirect } from "next/navigation";
 import { getArtworkBySlug, getArtworks } from "@/lib/getArtworks";
 
 type ArtworkPageProps = {
@@ -32,11 +31,5 @@ export async function generateMetadata({ params }: ArtworkPageProps) {
 
 export default async function ArtworkPage({ params }: ArtworkPageProps) {
   const { slug } = await params;
-  const artwork = getArtworkBySlug(slug);
-
-  if (!artwork) {
-    notFound();
-  }
-
-  return <ArtworkDetails artwork={artwork} />;
+  redirect(`/en/artwork/${slug}`);
 }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { type MouseEvent, useRef } from "react";
+import type { Locale } from "@/i18n/config";
 
 const tiles = [
   {
@@ -43,7 +44,18 @@ const tiles = [
   },
 ];
 
-export default function Hero() {
+type HeroProps = {
+  locale: Locale;
+  labels: {
+    line1: string;
+    line2: string;
+    line3: string;
+    description: string;
+    action: string;
+  };
+};
+
+export default function Hero({ locale, labels }: HeroProps) {
   const galleryRef = useRef<HTMLDivElement>(null);
 
   function handlePointerMove(event: MouseEvent<HTMLElement>) {
@@ -74,10 +86,10 @@ export default function Hero() {
   }
 
   return (
-    <section className="art-font px-4 py-5 text-stone-50">
+    <section className="art-font text-stone-50">
       <div
         onMouseMove={handlePointerMove}
-        className="gallery-panel relative mx-auto min-h-[650px] max-w-7xl overflow-hidden rounded-2xl"
+        className="relative min-h-[650px] w-full overflow-hidden"
       >
         <div
           ref={galleryRef}
@@ -105,22 +117,22 @@ export default function Hero() {
           <div className="max-w-xl pt-14">
             <div className="mb-8 h-28 w-px bg-white/15" />
             <h1 className="serif-title text-6xl leading-[0.95] text-stone-100 sm:text-7xl">
-              Discover.
+              {labels.line1}
               <br />
-              Inspire.
-              <br />
+              {labels.line2}
+              {" "}
               <span className="bg-gradient-to-r from-violet-400 to-cyan-300 bg-clip-text text-transparent">
-                Feel Art.
+                {labels.line3}
               </span>
             </h1>
             <p className="mt-8 max-w-sm text-lg leading-8 text-stone-300">
-              A digital gallery that brings creativity and inspiration to life.
+              {labels.description}
             </p>
             <Link
-              href="/gallery"
+              href={`/${locale}/gallery`}
               className="pointer-events-auto mt-9 inline-flex min-w-40 items-center justify-center rounded-full border border-violet-400/70 bg-white/5 px-5 py-3 text-xs font-semibold text-white shadow-[0_0_35px_rgba(111,76,255,0.22)] transition hover:border-cyan-300 hover:bg-white/10"
             >
-              Explore Gallery
+              {labels.action}
             </Link>
           </div>
         </div>

@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
-import Footer from "@/components/layout/Footer";
-import Navbar from "@/components/layout/Navbar";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -22,6 +20,15 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "Art Gallery",
   description: "A curated digital gallery of modern artworks.",
+  icons: {
+    icon: [
+      {
+        url: "/images/brand/artgallery-favicon.png",
+        type: "image/png",
+      },
+    ],
+    apple: "/images/brand/artgallery-favicon.png",
+  },
 };
 
 export default function RootLayout({
@@ -35,11 +42,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-[#15131b] text-stone-50">
-        <div className="flex min-h-screen flex-col">
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
+        {children}
       </body>
     </html>
   );

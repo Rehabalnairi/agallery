@@ -1,5 +1,8 @@
 type FilterTabsProps = {
-  categories: string[];
+  categories: {
+    value: string;
+    label: string;
+  }[];
   activeCategory: string;
   onCategoryChange: (category: string) => void;
 };
@@ -14,15 +17,15 @@ export default function FilterTabs({
       {categories.map((category) => (
         <button
           type="button"
-          key={category}
-          onClick={() => onCategoryChange(category)}
+          key={category.value}
+          onClick={() => onCategoryChange(category.value)}
           className={`rounded-full px-5 py-2 text-sm font-medium ${
-            category === activeCategory
+            category.value === activeCategory
               ? "bg-violet-500 text-white"
               : "border border-transparent text-stone-300 transition hover:border-white/10 hover:bg-white/5 hover:text-white"
           }`}
         >
-          {category}
+          {category.label}
         </button>
       ))}
     </div>

@@ -1,11 +1,30 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import type { Artwork } from "@/types/artwork";
 
 type ArtworkDetailsProps = {
   artwork: Artwork;
+  categoryLabel: string;
+  labels: {
+    breadcrumbHome: string;
+    breadcrumbGallery: string;
+    like: string;
+    liked: string;
+    likeArtwork: string;
+    medium: string;
+    dimensions: string;
+    category: string;
+    year: string;
+  };
 };
 
-export default function ArtworkDetails({ artwork }: ArtworkDetailsProps) {
+export default function ArtworkDetails({ artwork, categoryLabel, labels }: ArtworkDetailsProps) {
+  const [liked, setLiked] = useState(false);
+
   return (
     <section className="px-4 py-5">
       <div className="gallery-panel mx-auto grid max-w-7xl gap-10 rounded-2xl p-7 sm:p-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
@@ -20,34 +39,43 @@ export default function ArtworkDetails({ artwork }: ArtworkDetailsProps) {
           />
         </div>
         <div className="lg:sticky lg:top-24">
-          <p className="mb-8 text-xs text-stone-500">Home &gt; Gallery &gt; {artwork.title}</p>
+          <p className="mb-8 text-xs text-stone-500">
+            {labels.breadcrumbHome} &gt; {labels.breadcrumbGallery} &gt; {artwork.title}
+          </p>
           <h1 className="serif-title text-4xl text-stone-50 sm:text-5xl">{artwork.title}</h1>
           <p className="mt-4 text-sm text-stone-400">
             {artwork.artist}, {artwork.year}
           </p>
           <div className="mt-7 flex gap-3">
-            <button className="grid h-12 w-12 place-items-center rounded-xl bg-violet-600 text-lg text-white">
-              Like
-            </button>
-            <button className="rounded-xl border border-white/10 px-5 text-sm text-stone-300">
-              View in Room
+            <button
+              type="button"
+              aria-pressed={liked}
+              aria-label={liked ? labels.liked : labels.likeArtwork}
+              onClick={() => setLiked(true)}
+              className="grid h-12 w-12 place-items-center rounded-xl bg-violet-600 text-lg text-white transition hover:bg-violet-500"
+            >
+              {liked ? (
+                <FontAwesomeIcon icon={faHeart} className="h-5 w-5 text-red-100" aria-hidden="true" />
+              ) : (
+                labels.like
+              )}
             </button>
           </div>
           <dl className="mt-8 grid max-w-xl gap-5 text-sm sm:grid-cols-[8rem_1fr]">
             <div>
-              <dt className="text-stone-500">Medium</dt>
+              <dt className="text-stone-500">{labels.medium}</dt>
               <dd className="mt-1 text-stone-200">{artwork.medium}</dd>
             </div>
             <div>
-              <dt className="text-stone-500">Dimensions</dt>
+              <dt className="text-stone-500">{labels.dimensions}</dt>
               <dd className="mt-1 text-stone-200">{artwork.dimensions}</dd>
             </div>
             <div>
-              <dt className="text-stone-500">Category</dt>
-              <dd className="mt-1 text-stone-200">{artwork.category}</dd>
+              <dt className="text-stone-500">{labels.category}</dt>
+              <dd className="mt-1 text-stone-200">{categoryLabel}</dd>
             </div>
             <div>
-              <dt className="text-stone-500">Year</dt>
+              <dt className="text-stone-500">{labels.year}</dt>
               <dd className="mt-1 text-stone-200">{artwork.year}</dd>
             </div>
           </dl>
