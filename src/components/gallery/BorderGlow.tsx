@@ -10,14 +10,22 @@ type BorderGlowProps = {
   edgeSensitivity?: number;
   glowColor?: string;
   backgroundColor?: string;
-  borderRadius?: number;
-  glowRadius?: number;
+  borderRadius?: number | string;
+  glowRadius?: number | string;
   glowIntensity?: number;
   coneSpread?: number;
   animated?: boolean;
   colors?: string[];
   fillOpacity?: number;
 };
+
+function toCssSize(value: number | string) {
+  return typeof value === "number" ? `${value}px` : value;
+}
+
+function toNegativeCssSize(value: number | string) {
+  return typeof value === "number" ? `${-value}px` : `calc(${value} * -1)`;
+}
 
 function parseHSL(hslStr: string) {
   const match = hslStr.match(/([\d.]+)\s*([\d.]+)%?\s*([\d.]+)%?/);
@@ -87,20 +95,37 @@ function animateValue({
   onEnd?: () => void;
 }) {
   const t0 = performance.now() + delay;
+  let frameId: number | null = null;
+  let cancelled = false;
 
   function tick() {
+    if (cancelled) {
+      return;
+    }
+
     const elapsed = performance.now() - t0;
     const t = Math.min(elapsed / duration, 1);
     onUpdate(start + (end - start) * ease(t));
 
     if (t < 1) {
-      requestAnimationFrame(tick);
+      frameId = requestAnimationFrame(tick);
     } else {
       onEnd?.();
     }
   }
 
-  window.setTimeout(() => requestAnimationFrame(tick), delay);
+  const timeoutId = window.setTimeout(() => {
+    frameId = requestAnimationFrame(tick);
+  }, delay);
+
+  return () => {
+    cancelled = true;
+    window.clearTimeout(timeoutId);
+
+    if (frameId !== null) {
+      cancelAnimationFrame(frameId);
+    }
+  };
 }
 
 const GRADIENT_POSITIONS = [
@@ -217,39 +242,71 @@ export default function BorderGlow({
 
     const angleStart = 110;
     const angleEnd = 465;
-    requestAnimationFrame(() => {
-      setSweepActive(true);
-      setCursorAngle(angleStart);
-    });
+    let sweepFrameId: number | null = null;
+    let restartTimeoutId: number | null = null;
+    let cleanups: Array<() => void> = [];
 
-    animateValue({ duration: 500, onUpdate: (value) => setEdgeProximity(value / 100) });
-    animateValue({
-      ease: easeInCubic,
-      duration: 1500,
-      end: 50,
-      onUpdate: (value) => {
-        setCursorAngle((angleEnd - angleStart) * (value / 100) + angleStart);
-      },
-    });
-    animateValue({
-      ease: easeOutCubic,
-      delay: 1500,
-      duration: 2250,
-      start: 50,
-      end: 100,
-      onUpdate: (value) => {
-        setCursorAngle((angleEnd - angleStart) * (value / 100) + angleStart);
-      },
-    });
-    animateValue({
-      ease: easeInCubic,
-      delay: 2500,
-      duration: 1500,
-      start: 100,
-      end: 0,
-      onUpdate: (value) => setEdgeProximity(value / 100),
-      onEnd: () => setSweepActive(false),
-    });
+    function runSweep() {
+      cleanups.forEach((cleanup) => cleanup());
+      cleanups = [];
+
+      sweepFrameId = requestAnimationFrame(() => {
+        setSweepActive(true);
+        setCursorAngle(angleStart);
+      });
+
+      cleanups.push(animateValue({ duration: 500, onUpdate: (value) => setEdgeProximity(value / 100) }));
+      cleanups.push(
+        animateValue({
+          ease: easeInCubic,
+          duration: 1500,
+          end: 50,
+          onUpdate: (value) => {
+            setCursorAngle((angleEnd - angleStart) * (value / 100) + angleStart);
+          },
+        }),
+      );
+      cleanups.push(
+        animateValue({
+          ease: easeOutCubic,
+          delay: 1500,
+          duration: 2250,
+          start: 50,
+          end: 100,
+          onUpdate: (value) => {
+            setCursorAngle((angleEnd - angleStart) * (value / 100) + angleStart);
+          },
+        }),
+      );
+      cleanups.push(
+        animateValue({
+          ease: easeInCubic,
+          delay: 2500,
+          duration: 1500,
+          start: 100,
+          end: 0,
+          onUpdate: (value) => setEdgeProximity(value / 100),
+          onEnd: () => {
+            setSweepActive(false);
+            restartTimeoutId = window.setTimeout(runSweep, 700);
+          },
+        }),
+      );
+    }
+
+    runSweep();
+
+    return () => {
+      cleanups.forEach((cleanup) => cleanup());
+
+      if (sweepFrameId !== null) {
+        cancelAnimationFrame(sweepFrameId);
+      }
+
+      if (restartTimeoutId !== null) {
+        window.clearTimeout(restartTimeoutId);
+      }
+    };
   }, [animated]);
 
   const colorSensitivity = edgeSensitivity + 20;
@@ -274,7 +331,7 @@ export default function BorderGlow({
       className={`relative isolate grid border border-white/15 ${className}`}
       style={{
         background: backgroundColor,
-        borderRadius: `${borderRadius}px`,
+        borderRadius: toCssSize(borderRadius),
         transform: "translate3d(0, 0, 0.01px)",
         boxShadow:
           "rgba(0,0,0,0.1) 0 1px 2px, rgba(0,0,0,0.1) 0 2px 4px, rgba(0,0,0,0.1) 0 4px 8px, rgba(0,0,0,0.1) 0 8px 16px, rgba(0,0,0,0.1) 0 16px 32px, rgba(0,0,0,0.1) 0 32px 64px",
@@ -331,7 +388,7 @@ export default function BorderGlow({
       <span
         className="pointer-events-none absolute z-[1] rounded-[inherit]"
         style={{
-          inset: `${-glowRadius}px`,
+          inset: toNegativeCssSize(glowRadius),
           maskImage: `conic-gradient(from ${angleDeg} at center, black 2.5%, transparent 10%, transparent 90%, black 97.5%)`,
           WebkitMaskImage: `conic-gradient(from ${angleDeg} at center, black 2.5%, transparent 10%, transparent 90%, black 97.5%)`,
           opacity: glowOpacity,
@@ -342,7 +399,7 @@ export default function BorderGlow({
         <span
           className="absolute rounded-[inherit]"
           style={{
-            inset: `${glowRadius}px`,
+            inset: toCssSize(glowRadius),
             boxShadow: buildBoxShadow(glowColor, glowIntensity),
           }}
         />

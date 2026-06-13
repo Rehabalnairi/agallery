@@ -45,14 +45,14 @@ export default function Collections({ locale, artworks, labels }: CollectionsPro
             <Link
               key={collection.title}
               href={`/${locale}/gallery`}
-              className="group relative flex min-h-72 overflow-hidden rounded-xl border border-white/10 bg-white/5 p-5"
+              className="group relative flex min-h-72 overflow-hidden rounded-xl border border-white/10 bg-white/5 p-5 outline-none transition duration-300 active:scale-[0.98] focus-visible:border-cyan-300 focus-visible:ring-2 focus-visible:ring-cyan-300/40"
             >
               <Image
                 src={collection.artwork.image}
                 alt={collection.title}
                 fill
                 sizes="(min-width: 768px) 25vw, 100vw"
-                className="object-cover opacity-70 transition duration-500 group-hover:scale-105"
+                className="object-cover opacity-70 transition duration-500 group-hover:scale-105 group-active:scale-105 group-focus-visible:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
               <div className="relative mt-auto flex w-full items-end justify-between gap-4">
@@ -62,7 +62,7 @@ export default function Collections({ locale, artworks, labels }: CollectionsPro
                   </h3>
                   <p className="mt-4 text-sm text-stone-300">{collection.count}</p>
                 </div>
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/40 text-white transition group-hover:border-cyan-300">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/40 text-white transition group-hover:border-cyan-300 group-active:border-cyan-300 group-focus-visible:border-cyan-300">
                   <FontAwesomeIcon icon={faArrowRight} className="h-4 w-4" aria-hidden="true" />
                 </span>
               </div>

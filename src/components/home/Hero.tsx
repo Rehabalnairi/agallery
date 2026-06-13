@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { type MouseEvent, useRef } from "react";
+import { type PointerEvent, useCallback, useEffect, useRef } from "react";
 import type { Locale } from "@/i18n/config";
 
 const tiles = [
@@ -57,13 +57,49 @@ type HeroProps = {
 
 export default function Hero({ locale, labels }: HeroProps) {
   const galleryRef = useRef<HTMLDivElement>(null);
+  const idleAnimationRef = useRef<Animation | null>(null);
 
-  function handlePointerMove(event: MouseEvent<HTMLElement>) {
+  const startIdleMotion = useCallback(() => {
     const gallery = galleryRef.current;
 
     if (!gallery) {
       return;
     }
+
+    idleAnimationRef.current?.cancel();
+    idleAnimationRef.current = gallery.animate(
+      [
+        { transform: "translate(-2%, -2%)" },
+        { transform: "translate(-16%, -8%)" },
+        { transform: "translate(-7%, -17%)" },
+        { transform: "translate(-20%, -14%)" },
+      ],
+      {
+        duration: 22000,
+        direction: "alternate",
+        easing: "ease-in-out",
+        fill: "forwards",
+        iterations: Infinity,
+      },
+    );
+  }, []);
+
+  useEffect(() => {
+    startIdleMotion();
+
+    return () => {
+      idleAnimationRef.current?.cancel();
+    };
+  }, [startIdleMotion]);
+
+  function handlePointerMove(event: PointerEvent<HTMLElement>) {
+    const gallery = galleryRef.current;
+
+    if (!gallery) {
+      return;
+    }
+
+    idleAnimationRef.current?.cancel();
 
     const bounds = event.currentTarget.getBoundingClientRect();
     const xDecimal = (event.clientX - bounds.left) / bounds.width;
@@ -88,17 +124,21 @@ export default function Hero({ locale, labels }: HeroProps) {
   return (
     <section className="art-font text-stone-50">
       <div
-        onMouseMove={handlePointerMove}
-        className="relative min-h-[560px] w-full overflow-hidden sm:min-h-[650px]"
+        onPointerDown={handlePointerMove}
+        onPointerMove={handlePointerMove}
+        onPointerLeave={startIdleMotion}
+        onPointerCancel={startIdleMotion}
+        onPointerUp={startIdleMotion}
+        className="relative min-h-[560px] w-full touch-pan-y overflow-hidden sm:min-h-[650px]"
       >
         <div
           ref={galleryRef}
-          className="absolute left-0 top-0 h-[140vmax] w-[140vmax] opacity-95"
+          className="absolute left-0 top-0 h-[140vmax] w-[140vmax] opacity-95 will-change-transform"
         >
           {tiles.map((tile, index) => (
             <div
               key={`${tile.image}-${index}`}
-              className={`group absolute overflow-hidden rounded-[1.2vmax] shadow-[0_24px_80px_rgba(0,0,0,0.45)] transition-transform duration-700 ease-out hover:scale-110 ${tile.className}`}
+              className={`group absolute overflow-hidden rounded-[1.2vmax] shadow-[0_24px_80px_rgba(0,0,0,0.45)] transition-transform duration-700 ease-out hover:z-10 hover:scale-110 active:z-10 active:scale-110 ${tile.className}`}
             >
               <Image
                 src={tile.image}
