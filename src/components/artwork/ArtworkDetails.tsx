@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import BorderGlow from "@/components/gallery/BorderGlow";
+import BorderGlow from "@/components/ui/BorderGlow";
 import type { Artwork } from "@/types/artwork";
 
 type ArtworkDetailsProps = {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import BorderGlow from "@/components/gallery/BorderGlow";
+import BorderGlow from "@/components/ui/BorderGlow";
 import FilterTabs from "@/components/gallery/FilterTabs";
 import GalleryGrid from "@/components/gallery/GalleryGrid";
 import type { Locale } from "@/i18n/config";
